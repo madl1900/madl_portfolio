@@ -1,0 +1,205 @@
+---
+title: A Study in Factors on Musical Performance
+author: Madison Loutensock
+format:
+  html:
+    self-contained: true
+    embed-resources: true
+---
+
+
+# Introduction
+Throughout my life, I have had many experiences with private music lessons. I took private piano lessons for about 8 years and, recently, I have been working as a private piano teacher for the last 4 years. Therefore, I am very interested in analyzing what makes a lesson the most effective, so that I can be the an effective teacher.
+
+My main research question is: "What factors in a private music lesson will help increase a student's performance?"
+
+The sub-questions I will be focusing on are:
+Do students who have a longer duration of lessons tend to get better performance scores than others?
+Do students whose lessons focus on playing the instrument(practicality) tend to get better performance scores than those who focus on the theory?
+Does the age of the student affect their performance score?
+
+# Design the Study
+
+For this analysis, I will be using data taken from a study done on Music Education Performance, where a variety of possible factors were tested, as well as an overall performance score. I will be looking at both quantitative and categorical data and I expect to do at least one t.test and an ANOVA test. The population for this analysis is all people who take private music lessons.
+
+Response Variable: Performance Score
+
+Possible Explanatory Variables:  
+1.Duration - Quantitative  
+2.Lesson Type - Categorical  
+3.Age - Categorical
+
+
+# Collect the Data
+When I was first looking for data to analyze, my research question was "Does taking music lessons increase general education performance?" However, as I was looking into different data sets, I was drawn to this one about what affects musical performance. Due to the focus of the data being different from my original question, I had to adjust what I planned to research. I found the data through the website Kaggle, and the data was gathered in December of 2024.
+
+# Describe/Summarize the Data
+
+```{r}
+#read in libraries and dataset
+library(tidyverse)
+library(mosaic)
+library(rio)
+library(ggplot2)
+library(readr)
+library(car)
+
+setwd("C:/Users/madl1/OneDrive/Desktop/Student_Work/6-Semester_Project")
+
+music <- read_csv("music_education_dataset.csv")
+view(music)
+
+#clean up data
+unique(music$Lesson_Type)
+unique(music$Age)
+
+clean_music <- music %>%
+  filter(Performance_Score >= 60,
+         Performance_Score <= 100) %>%
+  select(Performance_Score, Duration, Lesson_Type, Age, Stress_Level)
+
+view(clean_music)
+```
+
+# Make Inference
+
+### Analyzing the linear relationship between performance score and duration of play time in lessons
+
+$$H_0:  \beta = 0$$  
+
+$$H_a:\beta > 0$$
+$$\alpha = 0.05 $$
+```{r}
+#explore and visualize data
+ggplot(clean_music, aes(y = Performance_Score, x = Duration)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Relationship Between Duration of Play Time and Performance Scores"
+  ) +
+  theme_bw()
+```
+The scatterplot seems to have points all over the graph. There is a slight linear relationship but it is a very weak negative one.
+
+```{r}
+#correlation coefficient
+cor(clean_music$Performance_Score ~ clean_music$Duration)
+
+#testing for linear regression
+lm_music <- lm(clean_music$Performance_Score ~ clean_music$Duration)
+summary(lm_music)
+```
+__Correlation Coefficient(r)__: -0.038, which is a very weak negative relationship  
+__Slope__: -0.003459  
+__Intercept__: 81.679254  
+__p-value__: 0.711  
+__Interpretation__: The p-value is not less than alpha(0.05), therefore I fail to reject the null hypothesis. I do not have sufficient evidence to suggest that the duration of play time in lessons has an effect on a student's performance score.
+
+```{r}
+#confidence interval
+confint(lm_music, level = 0.95)
+```
+__Confidence Interval__: I am 95% confident that the true slope of the relationship between duration and performance score is between -0.022 and 0.015. For every one second more play time in a lesson, a student's performance score changes by between -0.022 and 0.015, therefore there is little to no difference between scores in relation to the duration of play time in lessons.
+
+```{r}
+#check requirements
+
+#residuals
+qqPlot(lm_music$residuals)
+
+#variance
+plot(lm_music, which = 1)
+```
+__Residuals__: The residuals are normal  
+__Variance__: The variance is constant  
+__Trust p-value__: Yes, I can trust my p-value
+
+### Analyzing the relationship between Lesson Type and Performance Score through independent t.test
+
+$$H_0:  \mu_{Practical} = \mu_{Theory}$$  
+
+$$H_a:\mu_{P} > \mu_{T}$$
+$$\alpha = 0.05$$
+```{r}
+# explore and visualize data
+favstats(clean_music$Performance_Score ~ clean_music$Lesson_Type)
+
+ggplot(clean_music, aes(y = Performance_Score, x = Lesson_Type, fill = Lesson_Type)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs( title = "Comparing Performance Score by Lesson Type")
+```
+Looking at the boxplot and summary statistics, the theory focused lessons have a slightly larger median of performance scores than practical lessons. However, the variability of performance scores for practical lessons is larger, which may even it out.
+
+```{r}
+#t.test
+t.test(clean_music$Performance_Score ~ clean_music$Lesson_Type, alternative = "greater")
+```
+__t__: 0.27839  
+__df__: 93.437  
+__p-value__:0.3907  
+__Interpretation__: The p-value is not less than alpha, therefore I fail to reject the null hypothesis. I do not have sufficient evidence to suggest that students who take practical lessons get higher performance scores than those who take theory lessons.
+
+```{r}
+#confidence interval
+t.test(clean_music$Performance_Score ~ clean_music$Lesson_Type, conf.level = 0.95)$conf.int
+```
+__Confidence Interval__: I am 95% confident that the true difference in performance scores of students who take practical lessons is between 4.058 less points and 5.381 more points than those who take theory lessons.
+
+```{r}
+#check for normality
+qqPlot(clean_music$Performance_Score ~ clean_music$Lesson_Type)
+
+```
+__Normality__: The data is normal  
+__Trust p-value__: Yes, I can trust my p-value
+
+### Analyzing the relationship between performance score and age of the student through ANOVA
+
+$$H_o: \mu_{10} = \mu_{11} = \mu_{12} = \mu_{13} = \mu_{14} = \mu_{15} = \mu_{16} = \mu_{17}$$
+$$H_a: \text{at least one age is different from the others}$$
+$$\alpha = 0.05 $$
+```{r}
+#explore and visualize data
+favstats(clean_music$Performance_Score ~ clean_music$Age)
+
+category_order <- c("10", "11", "12", "13", "14", "15", "16", "17")
+
+ggplot(clean_music, aes(y = Performance_Score, x =factor(Age, levels = category_order), fill = factor(Age, levels = category_order))) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(
+    x = "Age",
+    title = "Comparing Performance Scores by Student Age",
+    fill = "Age")
+```
+Looking at the summary statistics and the boxplot, age 17's median does seem to be lower than the others.
+
+```{r}
+#anova test
+music_aov <- aov(clean_music$Performance_Score ~ clean_music$Age)
+summary(music_aov)
+```
+__f__: 1.295  
+__df__: 1  
+__p-value__: 0.258  
+__Interpretation__: The p-value is not less than alpha(0.05), therefore I fail to reject the null hypothesis. I do not have sufficient evidence to suggest that the age of the student has a significant affect on their performance score.
+
+```{r}
+#check requirements
+
+#residuals
+qqPlot(music_aov$residuals)
+
+#standard deviation variability
+sds <- favstats(clean_music$Performance_Score ~ clean_music$Age)$sd
+max(sds) / min(sds)
+
+```
+__Residuals__: The residuals are normal  
+__SD__: The standard deviations are approximately equal  
+__Trust p-value__: Yes, I can trust my p-value
+
+# Conclusion (Take Action)
+
+From my findings, I conclude that neither duration of play time, lesson type, nor age have a significant affect on a student's performance score. These findings did surprise me a little, as I expected to see a relationship between at least one of them and performance score. However, my findings do imply that no matter what type of lesson a student takes, how long the lesson is, or how old they are, they can still do well in a performance. After analyzing this data, I would be interested in doing some more studies to see what factors do affect a student's performance score.

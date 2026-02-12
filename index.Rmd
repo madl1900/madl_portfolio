@@ -1,0 +1,623 @@
+---
+title: "Statistics Notebook"
+---
+
+<!-- You can delete the following copyright statement if you wish: -->
+
+<div style="color:gray;"><!-- Code to change the following paragraphs to gray text -->
+
+This page, and all pages of this notebook, are meant to be customized to become a useful *Guide to Statistical Analysis* in R for your *current* and *future* self. 
+
+<div style="font-size:.8em;"><!-- Code to shrink font-size of following paragraph -->
+
+To begin customizing, [download](https://github.com/saundersg/Statistics-Notebook) your own copy of the book <span style="font-size:.8em;">(if you haven't already)</span>. Please note the [GNU General Public License](https://choosealicense.com/licenses/gpl-3.0/) when downloading. You are free to delete this commentary in your own copy of the notebook.
+
+</div><!-- Ends smaller font-size section -->
+
+</div><!-- End gray text section -->
+
+<!-- End of download and copyright instructions. -->
+
+
+## Table of Contents 
+
+
+<!-- This is how to comment text out. You can comment out the above instructions if you wish. Comments allow the text to remain in the Rmd file, but not be displayed in the html file. -->
+
+## {.tabset .tabset-fade}
+
+### Hide 
+
+### Show Notes
+
+<!-- This is a great place to add general notes, then "Knit" the file to have your notes show up in your Statistics-Notebook. --------------- -->
+Type I error: Rejecting Ho when it is true
+Type II error: Failing to reject Ho when it is false
+Level of significance: increasing alpha, will decrease the probability of creating a Type I error
+
+p-value: the probability of getting a result at least as extreme as the one found in your sample, assuming Ho is true
+If p-value is low, reject Ho, we have sufficient evidence for Ha, otherwise we do NOT have sufficient evidence for Ha
+
+Nonparametric methods can be used if the requirements are not met for parametric methods(t.test, chi-square, etc.)
+
+Wow! I typed some words. Some <span style="color:blue;">blue words</span>, some <span style="background-color:yellow;">highlighted words</span>, some <span style="font-size:2em;">big words</span>.
+
+Make a link to a meaningful page of the Statistics-Notebook: [Customization Help](RMarkdownHints.html) <- Read through this page!
+
+Or to a page on the internet: [R Colors](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+
+
+
+```{r}
+mean(airquality$Temp)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- End your notes before here. ------------------------------------- -->
+##
+
+----
+
+<div style="float:left;width:125px;" align=center class="tooltipimage">
+<img src="./Images/QuantY.png" width=35px;>
+  <span class="tooltipimagetext">Y is a single quantitative variable of interest. This would be like "heights" of BYU-Idaho students.</span>
+</div>
+
+## One Quantitative Response Variable Y {.tabset .tabset-pills}
+
+### Graphics
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Histograms, boxplots, dotplots - for graphical summaries
+
+Mean, median, five-number summary(favstats), standard deviation - for numerical summaries
+
+
+
+
+<a href="GraphicalSummaries.html#histogram">
+  <img class="myhover" src="./Images/histogram.png" alt="Histogram" title="Histogram">
+</a>
+<a href="GraphicalSummaries.html#dot-plots">
+  <img class="myhover" src="./Images/dotplotsingle.png" alt="Dot Plot" title="Dot Plot">
+</a>
+<a href="GraphicalSummaries.html#boxplots">
+  <img class="myhover" src="./Images/boxplotsingle.png" alt="Boxplot" title="Boxplot">
+</a>
+
+
+
+<!--- End your notes before here.  ------------------>
+</div>
+
+### Tests
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+[One Sample t test](tTests.html)
+
+Requirements: 
+
+Distribution of sample means is normal
+
+- Sample size >= 30
+
+- qqPlot to check for normality
+
+1) Ho: mu = value; Ha: mu != or > or <
+
+2) Check Requirements - library(car) qqPlot(data$var)
+
+3) t.test(NameOfYourData$Y, mu = YourNull, alternative = YourAlternative, conf.level = 0.95)
+
+4) library(tidyverse) ggplot(data, aes(x=column)) +
+
+  geom_histogram()
+  
+5) library(mosaic) favstats(data$var)
+
+Non-Parametric:
+
+[Signed-Rank Wilcoxon Test](WilcoxonTests.html) 
+    - if requirements are not met for t Test
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+
+
+#
+<div style="clear:both;"></div>
+
+----
+
+<div style="float:left;width:125px;" align=center class="tooltipimage">
+<img src="./Images/QuantYQualXg2.png" width=59px;>
+  <span class="tooltipimagetext">Y is a single quantitative variable of interest. This would be like "heights" of BYU-Idaho students. X is a qualitative (categorical) variable of interest like "gender" that has just two groups "A" and "B". So this logo represents situtations where we would want to compare heights of male (group A) and female (group B) students.</span>
+</div>
+
+## Quantitative Y | Categorical X (2 Groups) {.tabset .tabset-pills}
+
+### Graphics
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Boxplots, dotplots
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="GraphicalSummaries.html#boxplots">
+  <img class="myhover" src="./Images/boxplot.png" alt="Side-by-side Boxplots" title="Side-by-side Boxplots">
+</a>
+<a href="GraphicalSummaries.html#dot-plots">
+  <img class="myhover" src="./Images/dotplotdouble.png" alt="Dot Plot" title="Side-by-side Dot Plots">
+</a>
+
+
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+### Tests
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+
+[Paired t test](tTests.html)
+
+[Independent sample t test](tTests.html)
+
+Requirements for Independent and Paired:
+
+- Sample size >= 30
+
+- qqPlot to check normality
+
+
+Non-Parametric:
+
+[Signed-Rank Wilcoxon(for paired)](WilcoxonTests.html)
+
+[Rank-Sum Wilcoxon(for independent)](WilcoxonTests.html)
+    
+- if requirements are not met for t Test
+
+
+
+
+
+
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+
+
+
+
+##
+<div style="clear:both;"></div>
+
+----
+
+<div style="float:left;width:125px;" align=center class="tooltipimage">
+<img src="./Images/QuantYQualXg3plus.png" width=59px;>
+  <span class="tooltipimagetext">Y is a single quantitative variable of interest, like "heights" of BYU-Idaho students. X is a categorical (qualitative) variable like which Math 221 you took, 221A, 221B, or 221C. In other words, X has three or more groups. So "Classrank" could be X, with groups "Freshman", "Sophomore", "Junior", and "Senior".</span>
+</div>
+
+## Quantitative Y | Categorical X (3+ Groups) {.tabset .tabset-pills}
+
+### Graphics
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Boxplots, dotplots
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="GraphicalSummaries.html#boxplots">
+  <img class="myhover" src="./Images/boxplotthree.png" alt="Side-by-side Boxplots" title="Side-by-side Boxplots 3+ Groups">
+</a>
+<a href="GraphicalSummaries.html#dot-plots">
+  <img class="myhover" src="./Images/dotplottriple.png" alt="Side-by-side Dot Plots" title="Side-by-side Dot Plots 3+ Groups">
+</a>
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+### Tests
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+[One-Way ANOVA](ANOVA.html)
+
+Requirements:
+
+- Each group is normally distributed
+
+- Variance of error term is constant or similar or equal; Residual Plot
+
+Tukey Test
+    - used if the ANOVA p-value is significant, to find which specific group is different
+
+
+Non-Parametric:
+
+[Kruskal-Wallis Test](Kruskal.html)
+    - if requirements are not met for ANOVA
+
+
+
+
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+#
+<div style="clear:both;"></div>
+
+----
+
+
+
+
+<div style="float:left;width:125px;" align=center class="tooltipimage">
+<img src="./Images/QuantYMultQualX.png" width=80px;>
+  <span class="tooltipimagetext">Y is a single quantitative variable of interest, like "heights" of BYU-Idaho students. X1 is a categorical (qualitative) variable like gender, with levels "boy" and "girl." X2 is another categorical (qualitative) variable like "Classrank" with levels "Freshman", "Sophomore", and "Junior". Of course, both X1 and X2 can have as many levels as you want to work with, but must have at least two levels each.</span>
+</div>
+
+## Quantitative Y | Multiple Categorical X {.tabset .tabset-pills}
+
+### Graphics
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Boxplots, dotplots
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="GraphicalSummaries.html#boxplots">
+  <img class="myhover" src="./Images/boxplotthree.png" alt="Side-by-side Boxplots" title="Side-by-side Boxplots 3+ Groups">
+</a>
+<a href="GraphicalSummaries.html#dot-plots">
+  <img class="myhover" src="./Images/dotplottriple.png" alt="Side-by-side Dot Plots" title="Side-by-side Dot Plots 3+ Groups">
+</a>
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+### Tests
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Comparing by two or more SEPARATE categories
+
+[Two-Way ANOVA](ANOVA.html)
+
+Requirements:
+
+- Each group is normally distributed
+
+- Variance of error term is constant or similar or equal; Residual Plot
+
+
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+#
+<div style="clear:both;"></div>
+
+----
+
+
+<div style="float:left;width:125px;" align=center class="tooltipimage">
+<img src="./Images/QuantYQuantX.png" width=59px;>
+  <span class="tooltipimagetext">Y is a single quantitative variable of interest, like "height". X is another single quantitative variable of interest, like "shoe-size". This would imply we are using "shoe-size" (X) to explain "height" (Y).</span>
+</div>
+
+## Quantitative Y | Quantitative X {.tabset .tabset-pills}
+
+### Graphics
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Scatterplots
+
+
+
+
+
+
+
+
+
+<a href="GraphicalSummaries.html#scatterplots">
+  <img class="myhover" src="./Images/scatterplot.png" alt="Scatterplot" title="Scatterplot">
+</a>
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+### Tests
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+[Simple Linear Regression](LinearRegression.html)
+
+Reqiurements:
+
+- Constant variance
+
+- qqPlot of residuals
+
+- Independent errors
+
+
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+#
+<div style="clear:both;"></div>
+
+----
+
+<div style="float:left;width:125px;" align=center class="tooltipimage">
+<img src="./Images/QuantYMultX.png" width=100px;>
+  <span class="tooltipimagetext">Y is a single quantitative variable of interest, like height. While we could use an X1 of "shoe-size" to explain height, we might also want to use a second x-variable, X2, like "gender" to help explain height. Further x-variables could also be used.</span>
+</div>
+
+## Quantitative Y | Multiple X {.tabset .tabset-pills}
+
+### Graphics
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Scatterplots
+
+
+
+
+
+
+
+
+<a href="GraphicalSummaries.html#scatterplots">
+  <img class="myhover" src="./Images/scatterplotmany.png" alt="Scatterplot" title="Scatterplot with Color and Sizing">
+</a>
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+### Tests
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Comparing two or more quantitative variables with at least one categorical variable.
+
+[Multiple Linear Regression](LinearRegression.html)
+- Look at Two-Lines model
+
+Requirements:
+
+- Constant variance
+
+- qqPlot of residuals
+
+- Independent errors
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+#
+<div style="clear:both;"></div>
+
+----
+
+<div style="float:left;width:125px;" align=center class="tooltipimage">
+<img src="./Images/BinomYQuantX.png" width=59px;>
+  <span class="tooltipimagetext">Y is a single categorical (qualitative) variable of interest where 1 (success) or 0 (failure) are the only possible values for Y. This would be like "getting an A in Math 325" where 1 means you got an A and 0 means you didn't. We might use an explanatory variable X of "height" to see if taller students are more likely to get an A in Math 325 than shorter students. (They aren't, if you were wondering.)</span>
+</div>
+
+## Binomial Y | Quantitative X {.tabset .tabset-pills}
+
+### Graphics
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Binomial scatterplot
+
+
+
+
+
+
+
+<a href="GraphicalSummaries.html#scatterplots">
+  <img class="myhover" src="./Images/scatterplotbinomY.png" alt="Scatterplot with Binomial Y" title="Scatterplot with Binomial Y">
+</a>
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+### Tests
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Comparing a quantitative variable with a categorical variable that only has two categories.
+
+[Simple Logistic Regression](LogisticRegression.html)
+
+Requirements:
+
+- Goodness of Fit Test:
+    
+    - Hosmer-Lemeshow Test
+    
+    - Chisq Test: when there are multiple ties in the data
+
+
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+#
+<div style="clear:both;"></div>
+
+----
+
+<div style="float:left;width:125px;" align=center class="tooltipimage">
+<img src="./Images/BinomYMultX.png" width=100px;>
+  <span class="tooltipimagetext">Y is a single categorical (qualitative) variable of interest where 1 (success) or 0 (failure) are the only possible values for Y. This would be like "getting an A in Math 325" where 1 means you got an A and 0 means you didn't. We might use an explanatory variable X1 of "height" and a second explanatory variable X2 of "gender" to try to predict whether or not a student will get an A in Math 325.</span>
+</div>
+
+## Binomial Y | Multiple X {.tabset .tabset-pills}
+
+### Graphics
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Binomial scatterplot
+
+
+
+
+
+
+
+
+<a href="GraphicalSummaries.html#scatterplots">
+  <img class="myhover" src="./Images/scatterplotbinomYmult.png" alt="Scatterplot with Binomial Y" title="Scatterplot with Binomial Y, including coloring and shading">
+</a>
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+### Tests
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Comparing a two category variable with two or more other variables(both categorical and quantitative)
+
+Multiple Logistic Regression
+
+
+
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+#
+<div style="clear:both;"></div>
+
+----
+
+<div style="float:left;width:125px;" align=center class="tooltipimage">
+<img src="./Images/QualYQualX.png" width=59px;>
+  <span class="tooltipimagetext">Y is a single categorical variable of interest, like gender. X is another categorical variable of interest, like "hair color". This type of data would help us understand if men or women are more likely to have certain hair colors than the other gender.</span>
+</div>
+
+## Categorical Y | Categorical X {.tabset .tabset-pills}
+
+### Graphics
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+Barplots
+
+
+
+
+
+
+<a href="GraphicalSummaries.html#bar-charts">
+  <img class="myhover" src="./Images/barplot.png" alt="Bar Chart" title="Bar Chart">
+</a>
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+### Tests
+<div style="padding-left:125px;color:lightgray;">
+<!-- Add your customizations in the area below: -->
+
+[Chi-squared Test of Independence](ChiSquaredTests.html)
+
+Requirements:
+
+- Expected counts are all above 5
+
+OR
+
+- Expected counts are all above 1 and mean of expected counts is above 5
+
+
+
+<!--- End of Add content area.  ------------------>
+</div>
+
+#
+<div style="clear:both;"></div>
+
+----
+
+<footer></footer>
+
